@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Turun Saatanat",
   "description": "Adds a random swear word to the end of most headlines to enhance the reading experience of ts.fi.",
-  "version": "0.998",
+  "version": "0.998.0",
   "browser_specific_settings" :{
     "gecko": {
       "id": "{84114a27-55f7-4ca3-98ef-9698852383c8}"
