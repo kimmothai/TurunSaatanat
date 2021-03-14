@@ -1,25 +1,41 @@
-// Used for getting a random word from the words array
-function getRandomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
+// Some words are excluded since they do not work with the sentence structure well.
+const SWEAR_WORDS = ['vittu', 'perkele', 'saatana', 'helvetti', 'jumalauta'];
+// Only the marks that can appear at the end of a sentence.
+const PUNCTUATION_MARKS = ['"', '.', '?', '!', "'"];
 
-function insertAt(baseString, newString) {
-  // Adds a new string to the second-to-last index of the headline.
-  var inserted = baseString.substring(0, baseString.length- 1) + " " + newString + baseString.slice(-1);
-  return inserted;
-}
+// No special decision process other than to practice arrow functions.
+const pickRandomItemFromArray = (arr) =>
+  arr[Math.floor(Math.random() * arr.length)];
 
-function addSatan() {
-  var x = document.getElementsByTagName("h1");
-  var words = ["vittu", "perkele", "saatana", "helvetti", "jumalauta"];
-  for (var i = 0; i < x.length; i++) {
-  var isSymbol = x[i].innerText.slice(-1);
-  // Check if the word has to be inserted before the symbol.
-  if (isSymbol == '?' || isSymbol == '"' || isSymbol == '”' || isSymbol == '!') {
-    x[i].innerText = insertAt(x[i].innerText, words[getRandomInt(words.length)]);
-    } else {
-      x[i].innerText = x[i].innerText + " " + words[getRandomInt(words.length)];
+// I usually prefer function over const because the intent is clearer with the keyword 'function'.
+function findNonPunctuationIndex(title) {
+  let j = title.length - 1;
+  while (j >= 0) {
+    if (!PUNCTUATION_MARKS.includes(title[j])) {
+      return j;
     }
+    j--;
+  }
+}
+
+function updatedTitle(title) {
+  const firstNonPunctuationIndex = findNonPunctuationIndex(title);
+  const updatedTitle = `${title.slice(
+    0,
+    firstNonPunctuationIndex + 1
+  )} ${pickRandomItemFromArray(SWEAR_WORDS)}${title.slice(
+    firstNonPunctuationIndex + 1,
+    title.length
+  )}`;
+  return updatedTitle;
+}
+
+// This is much easier to follow than the previous iteration. The inconsistent indentation was fixed too.
+function addSatan() {
+  let titles = document.getElementsByTagName('h1');
+  for (let title in titles) {
+    const newTitle = updatedTitle(titles[title].innerText);
+    titles[title].innerText = newTitle;
   }
 }
 
